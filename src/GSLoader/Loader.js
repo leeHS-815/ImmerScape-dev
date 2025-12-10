@@ -139,6 +139,70 @@ export class GSLoader {
 		}
     }
 
+    // 按 URL 顺序加载序列 PLY（远程）
+    async readSequentialFromURL(prefix, start = 0, end = 0, pad = 5, name = '') {
+        const frameNum = end - start + 1;
+        if (frameNum <= 0) return;
+
+        // 发虚拟场景，供时间轴和 UI 准备
+        this.currentFile = name || prefix;
+        const data = {
+            chunkBased: '',
+            gsType: 'ThreeD',
+            name: this.currentFile,
+            uid: Utils.getRandomUID(),
+            transform: {
+                position: { x: 0, y: 0, z: 0 },
+                scale: { x: 1, y: 1, z: 1 },
+                rotation: { x: 0, y: 0, z: 0 },
+            },
+            appliedTransform: new THREE.Matrix4(),
+            modelMatrix:  new THREE.Matrix4(),
+            virtual: true,
+            sequential: true,
+            frameNum: frameNum,
+            startFrameIdx: start,
+            frames: new Array(frameNum).fill(''),
+            currentFrame: start,
+        };
+        data.sceneType = Utils.getSceneType(data);
+        this.eventBus.emit('buffersReady', {
+            data: data,
+            sceneName: data.name
+        });
+
+        // 倒序抓取并发送到 worker（与本地拖拽逻辑一致）
+        for (let idx = end; idx >= start; idx--) {
+            const url = `${prefix}${String(idx).padStart(pad, '0')}.ply`;
+            try {
+                const resp = await fetch(url);
+                if (!resp.ok) {
+                    console.warn(`fetch ${url} failed: ${resp.status}`);
+                    continue;
+                }
+                const content = await resp.arrayBuffer();
+                this.worker.postMessage({
+                    'type': LoadType.NATIVE,   // 已拿到 arrayBuffer，按本地读取流程处理
+                    'parser': ParserType.CPU,
+                    'name': url,
+                    'data': content,
+                    'quality': 'medium',
+                    'from': 'url-seq',
+                    'sequential': true,
+                    'frameIdx': idx,
+                }, [content]);
+                this.noteExternalListener(url);
+                if (idx === start) {
+                    // 最小帧完成后再 reset，与本地逻辑一致
+                    this.reset();
+                }
+            } catch (e) {
+                console.warn(`fetch ${url} error`, e);
+                continue;
+            }
+        }
+    }
+
     async handleFiles(files, directoryName = '') {
         files = files.filter(file => FileType[Utils.extractFileExtension(file.name).toUpperCase()] > 0);
         if (files.length === 0) {
