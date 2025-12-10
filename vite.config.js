@@ -4,6 +4,8 @@ import { resolve } from 'path';
 export default defineConfig({
   // 部署到 GitHub Pages 时请将 base 设为仓库名路径，若改仓库名请同步修改
   base: '/ImmerScape-dev/',
+  // 将 scenes 目录作为静态资源目录直接拷贝到 dist 根，供 /scenes/* 访问
+  publicDir: 'scenes',
   server: {
     port: 3000,
     open: true,
