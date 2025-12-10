@@ -84,7 +84,7 @@ export default class GSViewer {
         this.deltaT = 0;
         this.pause = false;
         this.isDraggingTimeline = false;
-        this.playSpeed = 1.0;
+        this.playSpeed = 30.0;   // 默认播放倍率
 
         this.alphaCullThreshold = 3 / 255;
         this.renderMode = RenderMode.splat;
@@ -262,6 +262,10 @@ export default class GSViewer {
     fetchSceneWithURL(url) {
         // TODO: this is just for show
         this.gsloader.readFileFromServer(url);
+    }
+
+    fetchSequentialFromURL(prefix, start = 0, end = 0, pad = 5, name = '') {
+        this.gsloader.readSequentialFromURL(prefix, start, end, pad, name);
     }
 
     fetchSceneWithNative(file) {
