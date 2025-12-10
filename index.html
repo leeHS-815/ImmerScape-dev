@@ -1204,7 +1204,7 @@
                 // viewer.setPlaybackSpeed(timeline.playbackSpeed);
                 // viewer.fetchSceneWithURL(`${basePath}scenes/chair.glb`);
                 // 通过 URL 加载远程 PLY 序列（编号 00000~00299）
-                viewer.fetchSequentialFromURL("https://oss-bucket-case.oss-cn-beijing.aliyuncs.com/dance/", 0, 299, 5, "dance");
+                viewer.fetchSequentialFromURL("https://oss-bucket-case.oss-cn-beijing.aliyuncs.com/dance_glb/", 0, 299, 5, "dance_glb");
                 viewer.addExternalListener((msg) => {
                     if (msg.updateTimestamp) {
                         if (!isDraggingTimelineSlider.value) {
