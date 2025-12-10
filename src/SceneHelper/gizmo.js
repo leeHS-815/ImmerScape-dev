@@ -41,7 +41,8 @@ export class Gizmo {
         this.lines.updateBuffers();
 
         // Circle
-        this.texture = this.graphicsAPI.loadTexture("/scenes/gizmo.png", true);
+        const base = import.meta.env.BASE_URL || "/";
+        this.texture = this.graphicsAPI.loadTexture(`${base}scenes/gizmo.png`, true);
         // --- 3D 着色器 ---
         const vsSource = `#version 300 es
             in vec2 a_position;

@@ -161,7 +161,8 @@ export class PostProcess {
         this.uniforms = this.graphicsAPI.getUniform(this.program);
         this.attributes = this.graphicsAPI.getAttrib(this.program);
 
-        this.lutTexture = this.graphicsAPI.loadTexture3D("/scenes/LUT.jpg", true)
+        const base = import.meta.env.BASE_URL || "/";
+        this.lutTexture = this.graphicsAPI.loadTexture3D(`${base}scenes/LUT.jpg`, true)
         
         // 创建全屏四边形VAO
         this.vao = this.graphicsAPI.setupFullscreenQuadVAO(
