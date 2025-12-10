@@ -149,10 +149,11 @@ export class GSSorter {
             console.error('Error object:', event.error);
         };
 
-        const SorterWasm = './wasm/sorter.wasm';
-        const SorterWasmNoSIMD = './wasm/sorter_no_simd.wasm';
-        const SorterWasmNoSIMDNonShared = './wasm/sorter_no_simd_non_shared.wasm';
-        const SorterWasmNonShared = './wasm/sorter_non_shared.wasm';
+        // 使用 import.meta.url 生成构建后正确的 wasm 路径（会带上 base/hash）
+        const SorterWasm = new URL('./wasm/sorter.wasm', import.meta.url).href;
+        const SorterWasmNoSIMD = new URL('./wasm/sorter_no_simd.wasm', import.meta.url).href;
+        const SorterWasmNoSIMDNonShared = new URL('./wasm/sorter_no_simd_non_shared.wasm', import.meta.url).href;
+        const SorterWasmNonShared = new URL('./wasm/sorter_non_shared.wasm', import.meta.url).href;
         this.sourceWasm = SorterWasm;
 
         if (!this.enableSIMDInSort) {
