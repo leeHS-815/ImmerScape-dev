@@ -2,6 +2,8 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
 export default defineConfig({
+  // 部署到 GitHub Pages 时请将 base 设为仓库名路径，若改仓库名请同步修改
+  base: '/ImmerScape-dev/',
   server: {
     port: 3000,
     open: true,
