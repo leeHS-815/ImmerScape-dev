@@ -173,7 +173,7 @@ export class GSLoader {
 
         // 倒序抓取并发送到 worker（与本地拖拽逻辑一致）
         for (let idx = end; idx >= start; idx--) {
-            const url = `${prefix}${String(idx).padStart(pad, '0')}.ply`;
+            const url = `${prefix}${String(idx).padStart(pad, '0')}.glb`;
             try {
                 const resp = await fetch(url);
                 if (!resp.ok) {
