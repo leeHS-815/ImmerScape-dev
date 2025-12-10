@@ -162,7 +162,8 @@ export class PostProcess {
         this.attributes = this.graphicsAPI.getAttrib(this.program);
 
         const base = import.meta.env.BASE_URL || "/";
-        this.lutTexture = this.graphicsAPI.loadTexture3D(`${base}scenes/LUT.jpg`, true)
+        // publicDir 配置为 scenes，会被拷贝到 dist 根目录，因此不再带 scenes/ 前缀
+        this.lutTexture = this.graphicsAPI.loadTexture3D(`${base}LUT.jpg`, true)
         
         // 创建全屏四边形VAO
         this.vao = this.graphicsAPI.setupFullscreenQuadVAO(

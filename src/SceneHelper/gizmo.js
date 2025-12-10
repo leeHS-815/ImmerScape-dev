@@ -42,7 +42,8 @@ export class Gizmo {
 
         // Circle
         const base = import.meta.env.BASE_URL || "/";
-        this.texture = this.graphicsAPI.loadTexture(`${base}scenes/gizmo.png`, true);
+        // publicDir 配置为 scenes，会被拷贝到 dist 根目录，因此不再带 scenes/ 前缀
+        this.texture = this.graphicsAPI.loadTexture(`${base}gizmo.png`, true);
         // --- 3D 着色器 ---
         const vsSource = `#version 300 es
             in vec2 a_position;
